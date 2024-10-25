@@ -35,3 +35,8 @@ Se tiene que recordar que las PR se realizan únicamente a la rama `dev`, por lo
 El diagrama lo pueden encontrar dentro de la carpeta raíz del proyecto: `dynamic-wallet`. Consultarlo las veces que sea necesario como referencia.
 
 ![Diagrama de clases del proyecto](./dynamic-wallet/dynamic-wallet_diagram.png)
+
+## Requetimientos Funcionales
+Consultar el documento adjunto llamado `requerimientos_dynamic_wallet.pdf` para saber qué debe realizar la app.
+
+[Documento de requisitos funcionales de la aplicación](requerimientos_dynamic_wallet.pdf)
