@@ -53,6 +53,21 @@ public class Account {
         this.balance = balance;
     }
 
+    /*
+     * Permite guardar un registro de cada operación realizada
+     *
+     * Criterios de aceptación:
+     * - Como argumento se pasa el movimiento que se realizó creado con anterioridad
+     * - El movimiento a registrar no debe ser nulo
+     * - Guardarlo en la lista de la cuenta junto con el resto de movimientos
+     * - El movimiento a registrar no debe estar registrado
+     *   con anterioridad, es decir, debe ser único.
+     * */
+    public void recordMovement(Movement movement) {
+        // todo: lógica pertinente al método
+        this.movements.add(movement);
+    }
+
 
 }
 
