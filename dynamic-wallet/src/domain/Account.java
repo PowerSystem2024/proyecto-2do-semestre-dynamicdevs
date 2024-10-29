@@ -38,6 +38,21 @@ public class Account {
         return this.enabled;
     }
 
+     // Setters
+     public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /*
+     * Al establecer el valor del nuevo balance se debe
+     * validar que sea mayor o igual a cero, ya que no debe
+     * ser posible tener un balance de cuenta en negativo
+     * */
+    public void setBalance(double balance) {
+        // todo: validar antes de establecer el balance
+        this.balance = balance;
+    }
+
 
 }
 
