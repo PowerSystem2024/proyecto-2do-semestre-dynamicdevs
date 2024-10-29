@@ -26,6 +26,14 @@ public class Account {
         return this.balance;
     }
 
+    /*
+     * Devuelve una lista de movimientos asociados a la cuenta
+     * que lo solicita.
+     * */
+    public List<Movement> getMovements() {
+        return this.movements;
+    }
+
 
 }
 
