@@ -34,6 +34,10 @@ public class Account {
         return this.movements;
     }
 
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
 
 }
 
