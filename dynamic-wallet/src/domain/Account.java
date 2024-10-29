@@ -16,6 +16,17 @@ public class Account {
              this.movements = new ArrayList<>(); // toda cuenta tiene una lista vacía de movimientos
              this.enabled = true; // cuenta habilitada por defecto
      }
+
+     // Getters
+    public int getAccountNumber() {
+        return this.accountNumber;
+    }
+
+    public double getBalance() {
+        return this.balance;
+    }
+
+
 }
 
 
