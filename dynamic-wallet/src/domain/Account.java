@@ -64,9 +64,22 @@ public class Account {
      *   con anterioridad, es decir, debe ser único.
      * */
     public void recordMovement(Movement movement) {
-        // todo: lógica pertinente al método
-        this.movements.add(movement);
+        //Verifica que movimiento no sea nulo
+        if (movement == null) {
+            System.out.println("El movimiento no puede ser nulo");
+        }
+        // Verifica si el movimiento ya está en la lista movement
+        else if (this.movements.contains(movement)) {
+            System.out.println("El movimiento ya está registrado");
+        }
+        // Si no es nulo y no está registrado, lo agrega a la lista
+        else { 
+            this.movements.add(movement);
+            System.out.println("Movimiento registado correctamente");
+        }
+        
     }
+        
 
 
 }
