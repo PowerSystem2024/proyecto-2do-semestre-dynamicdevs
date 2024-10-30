@@ -3,6 +3,8 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class Account {
     private static int idGenerator = 0; // generador de IDs
     protected int accountNumber;
@@ -15,7 +17,7 @@ public class Account {
              this.balance = 0.0; // toda cuenta nueva comienza con balance en cero
              this.movements = new ArrayList<>(); // toda cuenta tiene una lista vacía de movimientos
              this.enabled = true; // cuenta habilitada por defecto
-     }
+    }
 
      // Getters
     public int getAccountNumber() {
@@ -39,7 +41,7 @@ public class Account {
     }
 
      // Setters
-     public void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -79,8 +81,62 @@ public class Account {
         }
         
     }
-        
 
+
+    /*
+     * Transferir desde una cuenta de la misma moneda
+     * a otra cuenta de la misma moneda.
+     */
+    public Movement transfer(Account destinationAccount, double amount) {
+        //El monto a transferir debe ser mayor o igual a 1.
+        if (amount < 1) {
+            JOptionPane.showMessageDialog(null,"Error: El monto a transferir debe ser mayor o igual a 1.");
+        }
+        //Verifica que halla balance suficiente para realizar la transferencia
+        else if (this.balance < amount) {
+            JOptionPane.showMessageDialog(null,"Error: Fondos insuficientes en la cuenta de origen.");
+            
+        }   
+        //verificar si ambas cuentas deben existir en la base de datos    
+        else if (destinationAccount == null) {
+            JOptionPane.showMessageDialog(null,"Error: La cuenta de destino no existe.");
+        }
+
+        // Resta el monto de la cuenta de origen
+        this.balance -= amount;
+        // Suma el monto a la cuenta de destino
+        destinationAccount.setBalance(destinationAccount.getBalance() + amount);
+        // Crear movimientos para ambas cuentas
+        Movement originMovement = new Movement(this.accountNumber, destinationAccount.getAccountNumber(), amount);
+        Movement destinationMovement = new Movement(destinationAccount.getAccountNumber(), this.accountNumber, amount);       
+        // Registrar movimientos
+        this.recordMovement(originMovement);
+        destinationAccount.recordMovement(destinationMovement);
+        // Devolver movimiento de la cuenta de origen
+        return originMovement;
+    }
+
+
+    /*
+     * Permite realizar depósitos a cuentas propias de la misma moneda.
+     */
+    public Movement deposit(double amount) {
+        //El monto a depositar debe ser mayor o igual a 1
+        if (amount < 1) {
+            JOptionPane.showMessageDialog(null,"Error: El monto a transferir debe ser mayor o igual a 1.");
+        }
+        else if (this.balance < amount) {
+            JOptionPane.showMessageDialog(null,"Error: Fondos insuficientes en la cuenta de origen.");
+            
+        }
+        //Devolver el movimiento que refleja el detalle del depósito.
+        this.balance = this.balance + amount;
+        Movement movement = new Movement(this.accountNumber, this.accountNumber, amount);
+        this.recordMovement(movement);
+        return movement;
+
+    //todo: transferToForeignCurrency() (mejora)
+    }    
 
 }
 
