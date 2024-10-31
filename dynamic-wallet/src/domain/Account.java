@@ -8,14 +8,12 @@ public class Account {
     protected int accountNumber;
     protected double balance;
     protected List<Movement> movements; // lista de movimientos
-    protected boolean enabled;
 
     public Account(){
-        this.accountNumber = idGenerator; // se le asigna el ID único
+        this.accountNumber = idGenerator++; // se le asigna el ID único
              this.balance = 0.0; // toda cuenta nueva comienza con balance en cero
              this.movements = new ArrayList<>(); // toda cuenta tiene una lista vacía de movimientos
-             this.enabled = true; // cuenta habilitada por defecto
-     }
+    }
 
      // Getters
     public int getAccountNumber() {
@@ -34,23 +32,15 @@ public class Account {
         return this.movements;
     }
 
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-     // Setters
-     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     /*
      * Al establecer el valor del nuevo balance se debe
      * validar que sea mayor o igual a cero, ya que no debe
      * ser posible tener un balance de cuenta en negativo
      * */
     public void setBalance(double balance) {
-        // todo: validar antes de establecer el balance
+        if (balance >= 0) {
         this.balance = balance;
+        }
     }
 
     /*
@@ -79,9 +69,6 @@ public class Account {
         }
         
     }
-        
-
-
 }
 
 
