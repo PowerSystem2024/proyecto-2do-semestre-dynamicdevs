@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Account {
+
     private static int idGenerator = 0; // generador de IDs
     protected int accountNumber;
     protected double balance;
@@ -74,18 +75,18 @@ public class Account {
         return "Número de cuenta: " + accountNumber;
     }
 
-    public Movement deposit(Account destinationAccount, double amount) {
-        // Verificar que el monto sea mayor o igual a 1
+    public Movement deposit(double amount) {
+        // Verificar que el monto sea mayor o igual a 100
         if (amount < 100) {
-            System.out.println("El monto a transferir debe ser mayor o igual a 100.");
+            System.out.println("El monto a depositar debe ser mayor o igual a 100.");
             return null;
         }
-        // Verificar que hay suficiente dinero para transferir
-        if (this.getBalance() < amount) {
-            System.out.println("Dinero insuficiente para realizar la transferencia.");
-            return null;
-        }
-            return null;
+        // Se suma el monto de la cuenta de origen
+        this.setBalance(this.getBalance() + amount);
+        // Crear movimiento para el deposito
+        Movement movement = new Movement("Deposito",this.accountNumber, this.accountNumber, amount);
+        this.recordMovement(movement);
+        return movement;
     }
 
 }
