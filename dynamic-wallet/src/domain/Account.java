@@ -66,4 +66,12 @@ public class Account {
             System.out.println("Movimiento registado correctamente");
         }
     }
+    
+    //Sobrescribe el método toString() de la clase Object
+    @Override
+    public String toString() {
+        //Retorna una representación del objeto Account en formato String
+        retunr "Número de cuenta: " + accountNumber;
+    }
+
 }
