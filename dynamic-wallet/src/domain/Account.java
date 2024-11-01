@@ -73,4 +73,19 @@ public class Account {
         // Retorna una representación del objeto Account en formato String
         return "Número de cuenta: " + accountNumber;
     }
+
+    public Movement deposit(Account destinationAccount, double amount) {
+        // Verificar que el monto sea mayor o igual a 1
+        if (amount < 100) {
+            System.out.println("El monto a transferir debe ser mayor o igual a 100.");
+            return null;
+        }
+        // Verificar que hay suficiente dinero para transferir
+        if (this.getBalance() < amount) {
+            System.out.println("Dinero insuficiente para realizar la transferencia.");
+            return null;
+        }
+            return null;
+    }
+
 }
