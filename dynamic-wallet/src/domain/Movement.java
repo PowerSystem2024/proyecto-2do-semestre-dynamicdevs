@@ -1,6 +1,7 @@
 package domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Movement {
     // Cargamos atributos
@@ -40,38 +41,24 @@ public class Movement {
          * fecha del sistema.
          */
     }
-
-    // public String getTicket() {
-    // return "********* DINAMIC-WALLET *********\nTipo de transacción: "+
-    // this.transactionType+" -- N°: "+this.transactionId+"\nFecha:
-    // "+this.date+"\nCuenta Origen: "+this.originAccount+"\nCuenta destino:
-    // "+this.destinationAccount+"\nMonto: "+this.amount;
-    //
-    // } //Es mas óptimo utilizar StringBuilder
+    /**
+ * Sobreescritura del método toString() para proporcionar una representación en formato String
+ * de un objeto Movement. Este método muestra de manera detallada la información de la transacción,
+ * incluyendo ID, fecha y hora, tipo de operación, cuentas origen y destino, y el monto.
+ *
+ * @return Una cadena de texto formateada que representa el movimiento.
+ */
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        // Agregamos los string al strinbuilder
-        sb.append("********* DINAMIC-WALLET *********\nTipo de transacción: ");
-        sb.append("\nTipo de transacción: ")
-                .append(transactionType)
-                .append(" -- N°: ")
-                .append(transactionId)
-                .append("\n");
-        sb.append("Fecha: ")
-                .append(this.date)
-                .append("\n");
-        sb.append("Cuenta Origen: ")
-                .append(this.originAccount)
-                .append("\n");
-        sb.append("Cuenta Destino: ")
-                .append(this.destinationAccount)
-                .append("\n");
-        sb.append("Monto: ")
-                .append(this.amount)
-                .append("\n");
-
+        sb.append("Número de operación: ").append(transactionId).append("\n");
+        sb.append("Fecha y hora: ").append(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))).append("\n");  //importamos la java.time.format.DateTimeFormatter para dar el formato
+        sb.append("Tipo de operación: ").append(transactionType).append("\n");
+        sb.append("CBU cuenta origen: ").append(destinationAccount).append("\n");
+        sb.append("CBU cuenta destino: ").append(originAccount).append("\n");
+        sb.append("Monto: $").append(String.format("%.2f", amount)).append("\n"); //el monto se muestra con dos decimales
         return sb.toString();
     }
+   
 }
