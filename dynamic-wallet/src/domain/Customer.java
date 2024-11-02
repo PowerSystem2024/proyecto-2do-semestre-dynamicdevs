@@ -44,4 +44,23 @@ public class Customer {
         }
         this.accounts.add(account);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        // Agrega el ID del cliente
+        sb.append("ID Cliente: ").append(customerId);
+        // Agrega el nombre completo
+        sb.append("Nombre completo: ").append(firstName).append(" ").append(lastName).append("\n");
+        //Agrega la cantidad de cuentas asociadas
+        //El metodo size devuelve el número de elementos en una lista
+        //Es un metodo que pertenece a la clase List
+        sb.append("Cuentas asociadas: ").append(accounts.size()).append(" cuentas\n");
+        return sb.toString();
+    }
+    
+    
+    
+
+    
 }
