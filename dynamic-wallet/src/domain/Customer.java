@@ -45,6 +45,21 @@ public class Customer {
         this.accounts.add(account);
     }
 
+    /*
+    Método que permite obtener una cuenta especificando el tipo de cuenta (PESOS o USD)
+    */
+    
+        public Account getAccountByType(String accountType) {
+        for (Account account : this.getAccounts()) {  //Iterando sobre la lista de cuentas con un bucle for
+            if (accountType.equalsIgnoreCase("PESOS") && account instanceof PesosAccount) { //equalsIgnoreCase se usa para comparar dos cadenas sin tener en cuenta mayúsculas o minúsculas
+                return account; //Devuelve la cuenta en PESOS si la encuentra
+            } else if (accountType.equalsIgnoreCase("USD") && account instanceof USDAccount) {
+                return account; //Devuelve la cuenta en USD si la encuentra
+            }
+        }
+        return null; // si no se encuentra la cuenta solicitada, retornar null
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
