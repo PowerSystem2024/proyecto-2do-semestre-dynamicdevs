@@ -1,11 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import domain.Account;
 import domain.Customer;
@@ -66,7 +62,8 @@ public class DynamicWalletApp {
      */
     public static void registration() {
         // todo: validar todo antes de registrar al cliente
-        JOptionPane.showMessageDialog(null, "Para registrarse, ingrese los siguientes datos (presione OK para continuar)");
+        JOptionPane.showMessageDialog(null,
+                "Para registrarse, ingrese los siguientes datos (presione OK para continuar)");
 
         String firstName = JOptionPane.showInputDialog("Nombre");
         String lastName = JOptionPane.showInputDialog("Apellido");
