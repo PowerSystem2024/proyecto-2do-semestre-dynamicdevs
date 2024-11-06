@@ -21,6 +21,7 @@ public class DynamicWalletApp {
         initDummyData();
         welcomeMessage();
         registration();
+        openAccount();
     }
 
     public static void initDummyData() {
@@ -81,5 +82,39 @@ public class DynamicWalletApp {
             firstName = JOptionPane.showInputDialog("Nombre");
             lastName = JOptionPane.showInputDialog("Apellido");
         }
+    }
+
+    /**
+     * Permite crear una cuenta bancaria dependiendo de la
+     * opción que se elija.
+     * Si se elije una de las opciones pero ya posée una cuenta de ese tipo,
+     * se muestra un
+     * mensaje detallando el error.
+     */
+    public static void openAccount() {
+        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
+                "1. Cuenta en Pesos\n" +
+                "2. Cuenta en Dólares\n";
+
+        int option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+        while (option < 1 || option > 2) {
+            JOptionPane.showMessageDialog(null, "Opción incorrecta");
+            option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        }
+
+        String accountType = (option == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
+        account = loggedUser.getAccountByType(accountType);
+
+        if (account != null) {
+            JOptionPane.showMessageDialog(null, "Ya posee una cuenta en " + accountType, null, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        account = (option == 1) ? new PesosAccount() : new USDAccount();
+        loggedUser.addAccount(account);
+
+        JOptionPane.showMessageDialog(null, "Cuenta en " + accountType + " creada exitosamente", null,
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }
