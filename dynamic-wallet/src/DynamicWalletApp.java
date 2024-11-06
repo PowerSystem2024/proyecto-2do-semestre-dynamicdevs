@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import domain.Account;
 import domain.Customer;
@@ -20,6 +24,7 @@ public class DynamicWalletApp {
     public static void main(String[] args) {
         initDummyData();
         welcomeMessage();
+        registration();
     }
 
     public static void initDummyData() {
@@ -54,5 +59,30 @@ public class DynamicWalletApp {
         String welcomeMessage = "Bienvenido a Dynamic Wallet\nSu billetera virtual dinámica" +
                 "\n\nFavor de registrarse para operar";
         JOptionPane.showMessageDialog(null, welcomeMessage);
+    }
+
+    /**
+     * Registro del cliente: esto permitirá que el usuario pueda usar la app.
+     */
+    public static void registration() {
+        // todo: validar todo antes de registrar al cliente
+        JOptionPane.showMessageDialog(null, "Para registrarse, ingrese los siguientes datos (presione OK para continuar)");
+
+        String firstName = JOptionPane.showInputDialog("Nombre");
+        String lastName = JOptionPane.showInputDialog("Apellido");
+
+        validateRegistrationData(firstName, lastName);
+
+        loggedUser = new Customer(firstName, lastName);
+
+        JOptionPane.showMessageDialog(null, "Registro exitoso");
+    }
+
+    public static void validateRegistrationData(String firstName, String lastName) {
+        while (firstName == null || firstName.trim().isEmpty() || lastName == null || lastName.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre y apellido válidos");
+            firstName = JOptionPane.showInputDialog("Nombre");
+            lastName = JOptionPane.showInputDialog("Apellido");
+        }
     }
 }
