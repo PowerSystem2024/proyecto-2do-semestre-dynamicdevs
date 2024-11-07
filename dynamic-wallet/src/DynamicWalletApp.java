@@ -14,7 +14,7 @@ public class DynamicWalletApp {
     static List<Account> accountsDB;
 
     static Customer loggedUser;
-    static Movement movement;
+    static Movement transactionReceipt;
     static Account account;
 
     public static void main(String[] args) {
@@ -22,6 +22,7 @@ public class DynamicWalletApp {
         welcomeMessage();
         registration();
         openAccount();
+        app();
     }
 
     public static void initDummyData() {
@@ -96,25 +97,107 @@ public class DynamicWalletApp {
                 "1. Cuenta en Pesos\n" +
                 "2. Cuenta en Dólares\n";
 
-        int option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
-        while (option < 1 || option > 2) {
-            JOptionPane.showMessageDialog(null, "Opción incorrecta");
-            option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        while (selectedOption < 1 || selectedOption > 2) {
+            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
         }
 
-        String accountType = (option == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
+        String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
         account = loggedUser.getAccountByType(accountType);
 
         if (account != null) {
-            JOptionPane.showMessageDialog(null, "Ya posee una cuenta en " + accountType, null, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ya posee una cuenta en " + accountType, null,
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        account = (option == 1) ? new PesosAccount() : new USDAccount();
+        account = (selectedOption == 1) ? new PesosAccount() : new USDAccount();
         loggedUser.addAccount(account);
 
-        JOptionPane.showMessageDialog(null, "Cuenta en " + accountType + " creada exitosamente", null,
+        JOptionPane.showMessageDialog(null,
+                "Cuenta en " + accountType + " creada exitosamente\n\nDatos de la cuenta:\n" + account.toString(), null,
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void app() {
+        String mainMenu = "Bienvenido " + loggedUser.getFullName() + "\n" +
+                "¿Qué le gustaría realizar?\n" +
+                "1. Depositar\n" +
+                "2. Transferir\n" +
+                "3. Ver movimientos\n" +
+                "4. Ver estado de cuenta\n" +
+                "5. Crear una nueva cuenta bancaria\n" +
+                "6. Ver mis datos\n" +
+                "7. Finalizar";
+
+        int selectedOption;
+
+        do {
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(mainMenu));
+
+            switch (selectedOption) {
+                case 1:
+                    doDeposit();
+                    break;
+                case 2:
+                    // doTransfer();
+                    break;
+                case 3:
+                    // viewMovements();
+                    break;
+                case 4:
+                    // viewAccountStatus();
+                    break;
+                case 5:
+                    openAccount();
+                    break;
+                case 6:
+                    // displayUserInfo();
+                    break;
+                default: // cuando se elije la opción n°7
+                    JOptionPane.showMessageDialog(null, "Sesión cerrada con éxito", null,
+                            JOptionPane.INFORMATION_MESSAGE);
+                    break;
+            }
+        } while (selectedOption != 7);
+    }
+
+    /**
+     * Permite realizar un depósito a una cuenta seleccionada (Pesos o USD)
+     */
+    public static void doDeposit() {
+        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
+                "1. Cuenta en Pesos\n" +
+                "2. Cuenta en Dólares\n";
+
+        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+        while (selectedOption < 1 || selectedOption > 2) {
+            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        }
+
+        String accountType = (selectedOption == 1) ? "PESOS" : "USD";
+
+        account = loggedUser.getAccountByType(accountType);
+
+        if (account == null) {
+            JOptionPane.showMessageDialog(null, "No posee una cuenta en " + accountType, null,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double amountToDeposit = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a depositar", 100));
+
+        transactionReceipt = account.deposit(amountToDeposit);
+
+        if (transactionReceipt == null) {
+            return;
+        }
+
+        JOptionPane.showMessageDialog(null, "Depósito exitoso\n\n" + transactionReceipt.toString(), null,
                 JOptionPane.INFORMATION_MESSAGE);
     }
 }
