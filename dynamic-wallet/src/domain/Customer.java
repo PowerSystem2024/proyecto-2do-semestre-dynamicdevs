@@ -25,17 +25,29 @@ public class Customer {
         this.accounts = new ArrayList<>();
     }
 
-    // obtenemos nombre y apellido del usuario / cliente
+    /**
+     * Devuelve el nombre del cliente en formato "Nombre Apellido"
+     * 
+     * @return Nombre completo del cliente
+     */
     public String getFullName() {
         return (this.firstName + " " + this.lastName).toUpperCase();
     }
 
-    // obtenemos el listado de cuentas del usuario / cliente
+    /**
+     * Devuelve el listado de cuentas del cliente
+     * 
+     * @return Listado de cuentas asociadas
+     */
     public List<Account> getAccounts() {
         return this.accounts;
     }
 
-    // metodo para agregar una nueva cuenta al usuario, previa validación (si es nula)
+    /**
+     * Agrega una cuenta a la lista de cuentas del cliente
+     * 
+     * @param account Cuenta a agregar
+     */
     public void addAccount(Account account) {
         // Verificamos si el objeto account es null antes de agregarlo
         if (account == null) {
@@ -45,16 +57,20 @@ public class Customer {
         this.accounts.add(account);
     }
 
-    /*
-    Método que permite obtener una cuenta especificando el tipo de cuenta (PESOS o USD)
-    */
-    
-        public Account getAccountByType(String accountType) {
-        for (Account account : this.getAccounts()) {  //Iterando sobre la lista de cuentas con un bucle for
-            if (accountType.equalsIgnoreCase("PESOS") && account instanceof PesosAccount) { //equalsIgnoreCase se usa para comparar dos cadenas sin tener en cuenta mayúsculas o minúsculas
-                return account; //Devuelve la cuenta en PESOS si la encuentra
+    /**
+     * Obtener una cuenta especificando el tipo de cuenta
+     * 
+     * @param accountType Tipo de cuenta a buscar (Pesos o USD)
+     * @return Cuenta encontrada o null si no se encuentra
+     */
+    public Account getAccountByType(String accountType) {
+        for (Account account : this.getAccounts()) { // Iterando sobre la lista de cuentas con un bucle for
+            // equalsIgnoreCase se usa para comparar dos cadenas sin tener en cuenta
+            // mayúsculas o minúsculas
+            if (accountType.equalsIgnoreCase("PESOS") && account instanceof PesosAccount) {
+                return account; // Devuelve la cuenta en PESOS si la encuentra
             } else if (accountType.equalsIgnoreCase("USD") && account instanceof USDAccount) {
-                return account; //Devuelve la cuenta en USD si la encuentra
+                return account; // Devuelve la cuenta en USD si la encuentra
             }
         }
         return null; // si no se encuentra la cuenta solicitada, retornar null
@@ -67,15 +83,10 @@ public class Customer {
         sb.append("\nID Cliente: ").append(customerId);
         // Agrega el nombre completo
         sb.append("\nNombre completo: ").append(firstName).append(" ").append(lastName).append("\n");
-        //Agrega la cantidad de cuentas asociadas
-        //El metodo size devuelve el número de elementos en una lista
-        //Es un metodo que pertenece a la clase List
+        // Agrega la cantidad de cuentas asociadas
+        // El metodo size devuelve el número de elementos en una lista
+        // Es un metodo que pertenece a la clase List
         sb.append("Cuentas asociadas: ").append(accounts.size()).append(" cuentas\n");
         return sb.toString();
     }
-    
-    
-    
-
-    
 }

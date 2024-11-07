@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+/** 
+ * Representa una cuenta bancaria y sus operaciones
+ */
 public class Account {
-
     private static int idGenerator = 0; // generador de IDs
     protected int accountNumber;
     protected double balance;
@@ -27,7 +29,7 @@ public class Account {
         return this.balance;
     }
 
-    /*
+    /**
      * Devuelve una lista de movimientos asociados a la cuenta
      * que lo solicita.
      */
@@ -35,10 +37,8 @@ public class Account {
         return this.movements;
     }
 
-    /*
-     * Al establecer el valor del nuevo balance se debe
-     * validar que sea mayor o igual a cero, ya que no debe
-     * ser posible tener un balance de cuenta en negativo
+    /**
+     * Establece el balance de la cuenta
      */
     public void setBalance(double balance) {
         if (balance >= 0) {
@@ -46,15 +46,10 @@ public class Account {
         }
     }
 
-    /*
-     * Permite guardar un registro de cada operación realizada
-     *
-     * Criterios de aceptación:
-     * - Como argumento se pasa el movimiento que se realizó creado con anterioridad
-     * - El movimiento a registrar no debe ser nulo
-     * - Guardarlo en la lista de la cuenta junto con el resto de movimientos
-     * - El movimiento a registrar no debe estar registrado
-     * con anterioridad, es decir, debe ser único.
+    /**
+     * Permite guardar un registro de cada operación realizada en la cuenta
+     * 
+     * @param movement Movimiento a registrar
      */
     public void recordMovement(Movement movement) {
         // Verifica que movimiento no sea nulo
@@ -77,6 +72,12 @@ public class Account {
         return "Número de cuenta: " + accountNumber + "\nBalance: $" + balance;
     }
 
+    /**
+     * Permite realizar un depósito a la cuenta
+     * 
+     * @param amount Monto a depositar
+     * @return Comprobante de operación
+     */
     public Movement deposit(double amount) {
         // Verificar que el monto sea mayor o igual a 100
         if (amount < 100) {
@@ -87,9 +88,8 @@ public class Account {
         // Se suma el monto de la cuenta de origen
         this.setBalance(this.getBalance() + amount);
         // Crear movimiento para el deposito
-        Movement movement = new Movement("Deposito",this.accountNumber, this.accountNumber, amount);
+        Movement movement = new Movement("Deposito", this.accountNumber, this.accountNumber, amount);
         this.recordMovement(movement);
         return movement;
     }
-
 }
