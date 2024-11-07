@@ -154,7 +154,7 @@ public class DynamicWalletApp {
                     openAccount();
                     break;
                 case 6:
-                    // displayUserInfo();
+                    displayUserInfo();
                     break;
                 default: // cuando se elije la opción n°7
                     JOptionPane.showMessageDialog(null, "Sesión cerrada con éxito", null,
@@ -263,5 +263,12 @@ public class DynamicWalletApp {
 
         JOptionPane.showMessageDialog(null, account.toString() + "\nTipo de cuenta: " + accountType,
                 "Estado de cuenta", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Muestra los datos del usuario registrado
+     */
+    public static void displayUserInfo() {
+        JOptionPane.showMessageDialog(null, loggedUser.toString(), null, JOptionPane.INFORMATION_MESSAGE);
     }
 }
