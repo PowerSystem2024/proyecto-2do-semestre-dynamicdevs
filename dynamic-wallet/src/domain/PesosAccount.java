@@ -1,9 +1,8 @@
 package domain;
 
-/*
- * Cuenta hija que hereda de la clase Account todos sus
- * atributos y métodos
- * */
+/**
+ * Cuenta en pesos
+ */
 public class PesosAccount extends Account {
     // constructor clase hija
     public PesosAccount() {

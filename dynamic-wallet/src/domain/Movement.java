@@ -3,6 +3,9 @@ package domain;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Modela un movimiento bancario y proporciona métodos para obtener información
+ */
 public class Movement {
     // Cargamos atributos
     private static int idGenerator;// este es un contador de que es usado por la misma clase
@@ -29,36 +32,38 @@ public class Movement {
     private final double amount;
 
     public Movement(String transactionType, int destinationAccount, int originAccount, double amount) {
-        Movement.idGenerator++;// incrementamos en 1 el contador, no se utiliza this, ya que el contador es estatico
+        // incrementamos en 1 el contador, no se utiliza this, ya que el contador es estatico
+        Movement.idGenerator++;
         this.transactionId = Movement.idGenerator;// asignamos el valor actual del contador del ID de la transacción
         this.transactionType = transactionType;
         this.destinationAccount = destinationAccount;
         this.originAccount = originAccount;
         this.amount = amount;
+        // El método estático now() devuelve el LocalDateTime actual basado en la hora y fecha del sistema.
         this.date = LocalDateTime.now();
-        /*
-         * El metodo estático now() devuelve el LocalDateTime actual basado en la hora y
-         * fecha del sistema.
-         */
     }
+
     /**
- * Sobreescritura del método toString() para proporcionar una representación en formato String
- * de un objeto Movement. Este método muestra de manera detallada la información de la transacción,
- * incluyendo ID, fecha y hora, tipo de operación, cuentas origen y destino, y el monto.
- *
- * @return Una cadena de texto formateada que representa el movimiento.
- */
-    
+     * Sobreescritura del método toString() para proporcionar una representación en
+     * formato String
+     * de un objeto Movement. Este método muestra de manera detallada la información
+     * de la transacción,
+     * incluyendo ID, fecha y hora, tipo de operación, cuentas origen y destino, y
+     * el monto.
+     *
+     * @return Una cadena de texto formateada que representa el movimiento.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nNúmero de operación: ").append(transactionId).append("\n");
-        sb.append("Fecha y hora: ").append(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))).append("\n");  //importamos la java.time.format.DateTimeFormatter para dar el formato
+        sb.append("Fecha y hora: ").append(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm")))
+                .append("\n"); // importamos la java.time.format.DateTimeFormatter para dar el formato
         sb.append("Tipo de operación: ").append(transactionType).append("\n");
         sb.append("CBU cuenta origen: ").append(destinationAccount).append("\n");
         sb.append("CBU cuenta destino: ").append(originAccount).append("\n");
-        sb.append("Monto: $").append(String.format("%.2f", amount)).append("\n"); //el monto se muestra con dos decimales
+        // el monto se muestra con dos decimales
+        sb.append("Monto: $").append(String.format("%.2f", amount)).append("\n");
         return sb.toString();
     }
-   
 }
