@@ -145,7 +145,7 @@ public class DynamicWalletApp {
                     // doTransfer();
                     break;
                 case 3:
-                    // viewMovements();
+                    viewMovements();
                     break;
                 case 4:
                     // viewAccountStatus();
@@ -197,7 +197,42 @@ public class DynamicWalletApp {
             return;
         }
 
-        JOptionPane.showMessageDialog(null, "Depósito exitoso\n\n" + transactionReceipt.toString(), null,
+        JOptionPane.showMessageDialog(null, "Depósito exitoso\n" + transactionReceipt.toString(), null,
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Permite ver los movimientos de la cuenta seleccionada (Pesos o USD)
+     */
+    public static void viewMovements() {
+        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
+                "1. Cuenta en Pesos\n" +
+                "2. Cuenta en Dólares\n";
+
+        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+        while (selectedOption < 1 || selectedOption > 2) {
+            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        }
+
+        String accountType = (selectedOption == 1) ? "PESOS" : "USD";
+
+        account = loggedUser.getAccountByType(accountType);
+
+        if (account == null) {
+            JOptionPane.showMessageDialog(null, "No posee una cuenta en " + accountType, null,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (account.getMovements().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No hay movimientos para mostrar", null,
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        JOptionPane.showMessageDialog(null, account.getMovements(), "Movimientos de la cuenta",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 }
