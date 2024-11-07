@@ -52,7 +52,7 @@ public class Movement {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Número de operación: ").append(transactionId).append("\n");
+        sb.append("\nNúmero de operación: ").append(transactionId).append("\n");
         sb.append("Fecha y hora: ").append(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'a las' HH:mm"))).append("\n");  //importamos la java.time.format.DateTimeFormatter para dar el formato
         sb.append("Tipo de operación: ").append(transactionType).append("\n");
         sb.append("CBU cuenta origen: ").append(destinationAccount).append("\n");
