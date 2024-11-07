@@ -3,6 +3,8 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class Account {
 
     private static int idGenerator = 0; // generador de IDs
@@ -78,7 +80,8 @@ public class Account {
     public Movement deposit(double amount) {
         // Verificar que el monto sea mayor o igual a 100
         if (amount < 100) {
-            System.out.println("El monto a depositar debe ser mayor o igual a 100.");
+            JOptionPane.showMessageDialog(null, "El monto a depositar debe ser mayor o igual a 100.", null,
+                    JOptionPane.ERROR_MESSAGE);
             return null;
         }
         // Se suma el monto de la cuenta de origen
