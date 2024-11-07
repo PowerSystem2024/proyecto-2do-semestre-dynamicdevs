@@ -22,6 +22,7 @@ public class DynamicWalletApp {
         welcomeMessage();
         registration();
         openAccount();
+
     }
 
     public static void initDummyData() {
@@ -107,7 +108,8 @@ public class DynamicWalletApp {
         account = loggedUser.getAccountByType(accountType);
 
         if (account != null) {
-            JOptionPane.showMessageDialog(null, "Ya posee una cuenta en " + accountType, null, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ya posee una cuenta en " + accountType, null,
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -116,5 +118,48 @@ public class DynamicWalletApp {
 
         JOptionPane.showMessageDialog(null, "Cuenta en " + accountType + " creada exitosamente", null,
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void app() {
+        String mainMenu = "Bienvenido " + loggedUser.getFullName() + "\n" +
+                "¿Qué le gustaría realizar?\n" +
+                "1. Depositar\n" +
+                "2. Transferir\n" +
+                "3. Ver movimientos\n" +
+                "4. Ver estado de cuenta\n" +
+                "5. Crear una nueva cuenta bancaria\n" +
+                "6. Ver mis datos\n" +
+                "7. Finalizar";
+
+        int optionSelected;
+
+        do {
+            optionSelected = Integer.parseInt(JOptionPane.showInputDialog(mainMenu));
+
+            switch (optionSelected) {
+                case 1:
+                    // doDeposit();
+                    break;
+                case 2:
+                    // doTransfer();
+                    break;
+                case 3:
+                    // viewMovements();
+                    break;
+                case 4:
+                    // viewAccountStatus();
+                    break;
+                case 5:
+                    openAccount();
+                    break;
+                case 6:
+                    // displayUserInfo();
+                    break;
+                default: // cuando se elije la opción n°7
+                    JOptionPane.showMessageDialog(null, "Sesión cerrada con éxito", null,
+                            JOptionPane.INFORMATION_MESSAGE);
+                    break;
+            }
+        } while (optionSelected != 7);
     }
 }
