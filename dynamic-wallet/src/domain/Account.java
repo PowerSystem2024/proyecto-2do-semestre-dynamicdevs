@@ -74,7 +74,7 @@ public class Account {
     @Override
     public String toString() {
         // Retorna una representación del objeto Account en formato String
-        return "Número de cuenta: " + accountNumber;
+        return "Número de cuenta: " + accountNumber + "\nBalance: $" + balance;
     }
 
     public Movement deposit(double amount) {

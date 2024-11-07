@@ -148,13 +148,13 @@ public class DynamicWalletApp {
                     viewMovements();
                     break;
                 case 4:
-                    // viewAccountStatus();
+                    viewAccountStatus();
                     break;
                 case 5:
                     openAccount();
                     break;
                 case 6:
-                    // displayUserInfo();
+                    displayUserInfo();
                     break;
                 default: // cuando se elije la opción n°7
                     JOptionPane.showMessageDialog(null, "Sesión cerrada con éxito", null,
@@ -234,5 +234,41 @@ public class DynamicWalletApp {
 
         JOptionPane.showMessageDialog(null, account.getMovements(), "Movimientos de la cuenta",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Permite ver el estado de cuenta de la cuenta seleccionada (Pesos o USD)
+     */
+    public static void viewAccountStatus() {
+        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
+                "1. Cuenta en Pesos\n" +
+                "2. Cuenta en Dólares\n";
+
+        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+        while (selectedOption < 1 || selectedOption > 2) {
+            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        }
+
+        String accountType = (selectedOption == 1) ? "PESOS" : "USD";
+
+        account = loggedUser.getAccountByType(accountType);
+
+        if (account == null) {
+            JOptionPane.showMessageDialog(null, "No posee una cuenta en " + accountType, null,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        JOptionPane.showMessageDialog(null, account.toString() + "\nTipo de cuenta: " + accountType,
+                "Estado de cuenta", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Muestra los datos del usuario registrado
+     */
+    public static void displayUserInfo() {
+        JOptionPane.showMessageDialog(null, loggedUser.toString(), null, JOptionPane.INFORMATION_MESSAGE);
     }
 }
