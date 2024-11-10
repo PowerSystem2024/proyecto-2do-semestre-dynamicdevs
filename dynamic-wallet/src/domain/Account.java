@@ -99,24 +99,24 @@ public class Account {
      * @param amount Monto a transferir
      * @param account Cuenta a la que se va a transferir
      */
-    public void Transfer(Account account, double amount){
+    public Movement Transfer(Account account, double amount){
         //Validamos que el monto a transferir sea mayor o igual a 100
         if (amount < 100) {
             JOptionPane.showMessageDialog(null, "El monto a transferir debe ser mayor o igual a 100.", null,
                     JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         //Validamos que la cuenta a transferir exista
         if (account == null) {
             JOptionPane.showMessageDialog(null, "La cuenta de destino no puede ser nula.", null,
                     JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
 
         if (this.getBalance() < amount) {
             JOptionPane.showMessageDialog(null, "No tienes suficiente saldo para realizar la transferencia.", null,
                     JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
 
         // Se resta el monto de la cuenta de origen
@@ -125,8 +125,9 @@ public class Account {
         account.setBalance(account.getBalance() + amount);
 
         //Creamos dos Objetos de tipo Movement para registrar la transferencia
-        account.recordMovement(new Movement("Transferencia Enviada", account.getAccountNumber(), this.getAccountNumber(), amount));
-        this.recordMovement(new Movement("Transferencia Recibida", this.getAccountNumber(), account.getAccountNumber(), amount));
-        return;
+        account.recordMovement(new Movement("Transferencia Recibida", account.getAccountNumber(), this.getAccountNumber(), amount));
+        Movement actualMovement =  new Movement("Transferencia Enviada", this.getAccountNumber(), account.getAccountNumber(), amount);
+        this.recordMovement(actualMovement);
+        return actualMovement;
     }
 }
