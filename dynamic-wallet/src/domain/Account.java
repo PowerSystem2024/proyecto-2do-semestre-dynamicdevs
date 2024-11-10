@@ -15,7 +15,8 @@ public class Account {
     protected List<Movement> movements; // lista de movimientos
 
     public Account() {
-        this.accountNumber = idGenerator++; // se le asigna el ID único
+        idGenerator++;
+        this.accountNumber = idGenerator; // se le asigna el ID único
         this.balance = 0.0; // toda cuenta nueva comienza con balance en cero
         this.movements = new ArrayList<>(); // toda cuenta tiene una lista vacía de movimientos
     }
