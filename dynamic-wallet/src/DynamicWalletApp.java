@@ -94,17 +94,17 @@ public class DynamicWalletApp {
      */
     public static void openAccount() {
         String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-                "1. Cuenta en Pesos\n" +
-                "2. Cuenta en Dólares\n";
+        "1. Cuenta en Pesos\n" +
+        "2. Cuenta en Dólares\n";
 
         int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
         while (selectedOption < 1 || selectedOption > 2) {
-            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+        selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
         }
 
-        String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
+String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
         account = loggedUser.getAccountByType(accountType);
 
         if (account != null) {
@@ -271,4 +271,27 @@ public class DynamicWalletApp {
     public static void displayUserInfo() {
         JOptionPane.showMessageDialog(null, loggedUser.toString(), null, JOptionPane.INFORMATION_MESSAGE);
     }
+}
+
+
+
+public String selectAccountType() {
+    // Define el menú de opciones
+    String menu = "Seleccióne el tipo de cuenta para operar:\n" +
+                    "1. Cuenta en Pesos\n" +
+                    "2. Cuenta en Dólares\n";
+
+    // Solicita la opción seleccionada por el usuario
+    int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+
+    // Valida que la opción seleccionada sea correcta
+    while (selectedOption < 1 || selectedOption > 2) {
+        // Muestra un mensaje de error si la opción es incorrecta
+        JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+        // Solicita nuevamente la opción seleccionada por el usuario
+        selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+    }
+
+    // Retorna el tipo de cuenta basado en la opción seleccionada
+    return (selectedOption == 1) ? "PESOS" : "USD";
 }
