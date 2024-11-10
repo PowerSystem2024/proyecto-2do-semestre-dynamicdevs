@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import java.awt.*;
 
 import domain.Account;
 import domain.Customer;
@@ -18,6 +20,11 @@ public class DynamicWalletApp {
     static Account account;
 
     public static void main(String[] args) {
+        // Cambiar fuentes y bordes en el UIManager
+        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 18));
+        UIManager.put("OptionPane.buttonFont", new Font("Arial", Font.PLAIN, 18));
+        UIManager.put("OptionPane.minimumSize", new Dimension(400, 200)); // Mínimo tamaño del cuadro de diálogo
+
         initDummyData();
         welcomeMessage();
         registration();
@@ -39,6 +46,8 @@ public class DynamicWalletApp {
         for (Customer customerSaved : customersDB) {
             accountsDB.addAll(customerSaved.getAccounts());
         }
+
+        accountsDB.forEach(System.out::println);
     }
 
     public static Account getAccountByAccountNumberFromDB(int accountNumber) {
@@ -94,17 +103,17 @@ public class DynamicWalletApp {
      */
     public static void openAccount() {
         String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-        "1. Cuenta en Pesos\n" +
-        "2. Cuenta en Dólares\n";
+                "1. Cuenta en Pesos\n" +
+                "2. Cuenta en Dólares\n";
 
         int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
         while (selectedOption < 1 || selectedOption > 2) {
-        JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-        selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
         }
 
-String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
+        String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
         account = loggedUser.getAccountByType(accountType);
 
         if (account != null) {
@@ -142,7 +151,7 @@ String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta 
                     doDeposit();
                     break;
                 case 2:
-                    // doTransfer();
+                    doTransfer();
                     break;
                 case 3:
                     viewMovements();
@@ -199,6 +208,46 @@ String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta 
 
         JOptionPane.showMessageDialog(null, "Depósito exitoso\n" + transactionReceipt.toString(), null,
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Permite realizar una transferencia a una cuenta
+     */
+    public static void doTransfer() {
+        int destinationAccountNumber = Integer.parseInt(JOptionPane.showInputDialog("CBU cuenta destino"));
+
+        Account destinationAccount = getAccountByAccountNumberFromDB(destinationAccountNumber);
+
+        if (destinationAccount == null) {
+            JOptionPane.showMessageDialog(null, "Cuenta destino no encontrada", null, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String accountType = selectAccountType();
+
+        Account originAccount = loggedUser.getAccountByType(accountType);
+
+        if (originAccount == null) {
+            JOptionPane.showMessageDialog(null, "No posee una cuenta en " + accountType, null,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double amountToTransfer = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el monto a transferir", 100));
+
+        // no se permiten transferencias entre distintas monedas (USD) -> (Pesos)
+        if (originAccount.getClass() != destinationAccount.getClass()) {
+            JOptionPane.showMessageDialog(null, "No se pueden realizar transferencias a cuentas de distinta moneda",
+                    null,
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Movement movement = originAccount.Transfer(destinationAccount, amountToTransfer);
+
+        if (movement != null) {
+            JOptionPane.showMessageDialog(null, movement, null, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**
@@ -271,27 +320,25 @@ String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta 
     public static void displayUserInfo() {
         JOptionPane.showMessageDialog(null, loggedUser.toString(), null, JOptionPane.INFORMATION_MESSAGE);
     }
-}
 
+    public static String selectAccountType() {
+        // Define el menú de opciones
+        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
+                "1. Cuenta en Pesos\n" +
+                "2. Cuenta en Dólares\n";
 
+        // Solicita la opción seleccionada por el usuario
+        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
-public String selectAccountType() {
-    // Define el menú de opciones
-    String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-                    "1. Cuenta en Pesos\n" +
-                    "2. Cuenta en Dólares\n";
+        // Valida que la opción seleccionada sea correcta
+        while (selectedOption < 1 || selectedOption > 2) {
+            // Muestra un mensaje de error si la opción es incorrecta
+            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
+            // Solicita nuevamente la opción seleccionada por el usuario
+            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        }
 
-    // Solicita la opción seleccionada por el usuario
-    int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-
-    // Valida que la opción seleccionada sea correcta
-    while (selectedOption < 1 || selectedOption > 2) {
-        // Muestra un mensaje de error si la opción es incorrecta
-        JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-        // Solicita nuevamente la opción seleccionada por el usuario
-        selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        // Retorna el tipo de cuenta basado en la opción seleccionada
+        return (selectedOption == 1) ? "PESOS" : "USD";
     }
-
-    // Retorna el tipo de cuenta basado en la opción seleccionada
-    return (selectedOption == 1) ? "PESOS" : "USD";
 }
