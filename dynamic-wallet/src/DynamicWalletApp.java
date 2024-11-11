@@ -20,10 +20,7 @@ public class DynamicWalletApp {
     static Account account;
 
     public static void main(String[] args) {
-        // Cambiar fuentes y bordes en el UIManager
-        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 18));
-        UIManager.put("OptionPane.buttonFont", new Font("Arial", Font.PLAIN, 18));
-        UIManager.put("OptionPane.minimumSize", new Dimension(400, 200)); // Mínimo tamaño del cuadro de diálogo
+        applyCustomOptionPaneStyles();
 
         initDummyData();
         welcomeMessage();
@@ -32,6 +29,19 @@ public class DynamicWalletApp {
         app();
     }
 
+    /**
+     * Aplica estilos personalizados a los cuadros de diálogo de JOptionPane
+     */
+    public static void applyCustomOptionPaneStyles() {
+        // Cambiar fuentes y bordes en el UIManager
+        UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 18));
+        UIManager.put("OptionPane.buttonFont", new Font("Arial", Font.PLAIN, 18));
+        UIManager.put("OptionPane.minimumSize", new Dimension(400, 200)); // Mínimo tamaño del cuadro de diálogo
+    }
+
+    /**
+     * Inicializa los datos de prueba de la aplicación
+     */
     public static void initDummyData() {
         customersDB = List.of(
                 new Customer("John", "Doe"),
@@ -50,6 +60,12 @@ public class DynamicWalletApp {
         accountsDB.forEach(System.out::println);
     }
 
+    /**
+     * Obtiene una cuenta bancaria por número de cuenta
+     *
+     * @param accountNumber Número de cuenta
+     * @return Cuenta bancaria
+     */
     public static Account getAccountByAccountNumberFromDB(int accountNumber) {
         for (Account accountSaved : accountsDB) {
             if (accountSaved.getAccountNumber() == accountNumber) {
@@ -102,18 +118,8 @@ public class DynamicWalletApp {
      * mensaje detallando el error.
      */
     public static void openAccount() {
-        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-                "1. Cuenta en Pesos\n" +
-                "2. Cuenta en Dólares\n";
+        String accountType = selectAccountType();
 
-        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-
-        while (selectedOption < 1 || selectedOption > 2) {
-            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-        }
-
-        String accountType = (selectedOption == 1) ? "PESOS" : "USD"; // tipo de cuenta según elección
         account = loggedUser.getAccountByType(accountType);
 
         if (account != null) {
@@ -122,7 +128,7 @@ public class DynamicWalletApp {
             return;
         }
 
-        account = (selectedOption == 1) ? new PesosAccount() : new USDAccount();
+        account = (accountType.equalsIgnoreCase("PESOS")) ? new PesosAccount() : new USDAccount();
         loggedUser.addAccount(account);
 
         JOptionPane.showMessageDialog(null,
@@ -130,6 +136,9 @@ public class DynamicWalletApp {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Menú principal de la aplicación
+     */
     public static void app() {
         String mainMenu = "Bienvenido " + loggedUser.getFullName() + "\n" +
                 "¿Qué le gustaría realizar?\n" +
@@ -145,6 +154,8 @@ public class DynamicWalletApp {
 
         do {
             selectedOption = Integer.parseInt(JOptionPane.showInputDialog(mainMenu));
+
+            validateInputAcordingRange(selectedOption, 1, 7, "Opcion incorrecta", mainMenu);
 
             switch (selectedOption) {
                 case 1:
@@ -177,18 +188,7 @@ public class DynamicWalletApp {
      * Permite realizar un depósito a una cuenta seleccionada (Pesos o USD)
      */
     public static void doDeposit() {
-        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-                "1. Cuenta en Pesos\n" +
-                "2. Cuenta en Dólares\n";
-
-        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-
-        while (selectedOption < 1 || selectedOption > 2) {
-            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-        }
-
-        String accountType = (selectedOption == 1) ? "PESOS" : "USD";
+        String accountType = selectAccountType();
 
         account = loggedUser.getAccountByType(accountType);
 
@@ -202,12 +202,10 @@ public class DynamicWalletApp {
 
         transactionReceipt = account.deposit(amountToDeposit);
 
-        if (transactionReceipt == null) {
-            return;
+        if (transactionReceipt != null) {
+            JOptionPane.showMessageDialog(null, "Depósito exitoso\n" + transactionReceipt.toString(), null,
+                    JOptionPane.INFORMATION_MESSAGE);
         }
-
-        JOptionPane.showMessageDialog(null, "Depósito exitoso\n" + transactionReceipt.toString(), null,
-                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -254,18 +252,7 @@ public class DynamicWalletApp {
      * Permite ver los movimientos de la cuenta seleccionada (Pesos o USD)
      */
     public static void viewMovements() {
-        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-                "1. Cuenta en Pesos\n" +
-                "2. Cuenta en Dólares\n";
-
-        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-
-        while (selectedOption < 1 || selectedOption > 2) {
-            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-        }
-
-        String accountType = (selectedOption == 1) ? "PESOS" : "USD";
+        String accountType = selectAccountType();
 
         account = loggedUser.getAccountByType(accountType);
 
@@ -289,18 +276,7 @@ public class DynamicWalletApp {
      * Permite ver el estado de cuenta de la cuenta seleccionada (Pesos o USD)
      */
     public static void viewAccountStatus() {
-        String menu = "Seleccióne el tipo de cuenta para operar:\n" +
-                "1. Cuenta en Pesos\n" +
-                "2. Cuenta en Dólares\n";
-
-        int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-
-        while (selectedOption < 1 || selectedOption > 2) {
-            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-        }
-
-        String accountType = (selectedOption == 1) ? "PESOS" : "USD";
+        String accountType = selectAccountType();
 
         account = loggedUser.getAccountByType(accountType);
 
@@ -321,6 +297,12 @@ public class DynamicWalletApp {
         JOptionPane.showMessageDialog(null, loggedUser.toString(), null, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Muestra un menú de opciones para seleccionar el tipo de cuenta
+     * en la que se desea operar.
+     *
+     * @return el tipo de cuenta seleccionada
+     */
     public static String selectAccountType() {
         // Define el menú de opciones
         String menu = "Seleccióne el tipo de cuenta para operar:\n" +
@@ -330,15 +312,32 @@ public class DynamicWalletApp {
         // Solicita la opción seleccionada por el usuario
         int selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
 
-        // Valida que la opción seleccionada sea correcta
-        while (selectedOption < 1 || selectedOption > 2) {
-            // Muestra un mensaje de error si la opción es incorrecta
-            JOptionPane.showMessageDialog(null, "Opción incorrecta", null, JOptionPane.ERROR_MESSAGE);
-            // Solicita nuevamente la opción seleccionada por el usuario
-            selectedOption = Integer.parseInt(JOptionPane.showInputDialog(menu));
-        }
+        validateInputAcordingRange(selectedOption, 1, 2, "Opcion incorrecta", menu);
 
         // Retorna el tipo de cuenta basado en la opción seleccionada
         return (selectedOption == 1) ? "PESOS" : "USD";
+    }
+
+    /**
+     * Valida las opciones ingresadas por el usuario. Se debe determinar un rango A
+     * y B.
+     * Mediante un bucle se evalúa si el valor ingresado está fuera de esos rangos.
+     * Caso de que el valor esté fuera de los rangos especificados, se vuelve a
+     * pedir que ingrese el valor
+     * nuevamente hasta que el valor ingresado sea correcto (esté dentro de los
+     * parámetros).
+     *
+     * @param option   Valor ingresado por el usuario
+     * @param rangeA   Rango inicial
+     * @param rangeB   Rango final
+     * @param errorMsg Mensaje de error al ingresar un valor fuera de los rangos
+     * @param menu     Menú de opciones
+     */
+    public static void validateInputAcordingRange(int option, int rangeA, int rangeB, String errorMsg, String menu) {
+        // si se pone un valor incorrecto de opción, se vuelve a pedir
+        while (option < rangeA || option > rangeB) {
+            JOptionPane.showMessageDialog(null, errorMsg);
+            option = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        }
     }
 }
